@@ -9,4 +9,17 @@ public class Main {
         plantToUnlockSpecies.add("Dwarf Sunflower");
         plantToUnlockSpecies.add("Oak Tree");
     }
+
+    class Plant {
+        String name;
+        int timeToMature;
+        double rateOfSpread;
+        double survivalRate;
+
+        Plant(String name, int timeToMature, double rateOfSpread) {
+            this.name = name;
+            this.timeToMature = timeToMature;
+            this.rateOfSpread = rateOfSpread;
+        }
+    }
 }
