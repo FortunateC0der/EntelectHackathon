@@ -32,9 +32,7 @@ public class Main {
     public static void main(String[] args) {
         List<TickAction> actions = generateLevel1Strategy();
         writeJson("level1_solution.json", actions);
-        int totalPlants = actions.stream()
-                .mapToInt(action -> action.plants.size())
-                .sum();
+        int totalPlants = actions.stream().mapToInt(a -> a.plants.size()).sum();
         LOGGER.info("Level 1 solution written to level1_solution.json");
         LOGGER.info("Total planting actions scheduled: " + totalPlants);
     }
@@ -48,37 +46,37 @@ public class Main {
             boolean isWinter = "Winter".equals(season);
             int phase = tick / 100;
             if (phase == 0) {
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, GRASS, 5, tick, 1);
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 4, tick, 2);
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 3, tick, 3);
-                if (!isWinter) {
-                    addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 3, tick, 2);
-                }
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 2, tick, 5);
-            } else if (phase == 1) {
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 4, tick, 6);
                 addPlants(plantsThisTick, usedThisTick, globalOccupied, GRASS, 3, tick, 1);
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 3, tick, 2);
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 3, tick, 3);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 2, tick, 2);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 2, tick, 3);
                 if (!isWinter) {
-                    addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 4, tick, 2);
+                    addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 2, tick, 2);
                 }
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 3, tick, 5);
-            } else if (phase == 2) {
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, GRASS, 2, tick, 1);
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 3, tick, 2);
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 3, tick, 3);
-                if (!isWinter) {
-                    addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 3, tick, 2);
-                }
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 4, tick, 5);
-            } else {
+            } else if (phase == 1) {
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 5, tick, 6);
                 addPlants(plantsThisTick, usedThisTick, globalOccupied, GRASS, 2, tick, 1);
                 addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 2, tick, 2);
                 addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 2, tick, 3);
                 if (!isWinter) {
                     addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 2, tick, 2);
                 }
-                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 5, tick, 5);
+            } else if (phase == 2) {
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 6, tick, 5);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, GRASS, 2, tick, 1);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 1, tick, 2);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 1, tick, 3);
+                if (!isWinter) {
+                    addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 1, tick, 2);
+                }
+            } else {
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, OAK_TREE, 7, tick, 5);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, GRASS, 1, tick, 1);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, LAVENDER, 1, tick, 2);
+                addPlants(plantsThisTick, usedThisTick, globalOccupied, DWARF_SUNFLOWER, 1, tick, 3);
+                if (!isWinter) {
+                    addPlants(plantsThisTick, usedThisTick, globalOccupied, ROSE_BUSH, 1, tick, 2);
+                }
             }
             if (plantsThisTick.size() > MAX_PLANTS_PER_TICK) {
                 plantsThisTick = new ArrayList<>(plantsThisTick.subList(0, MAX_PLANTS_PER_TICK));
@@ -92,51 +90,45 @@ public class Main {
         }
         return result;
     }
-    static void addPlants(
-            List<PlantAction> plants,
-            Set<String> usedThisTick,
-            Set<String> globalOccupied,
-            int plantIndex,
-            int count,
-            int tick,
-            int minSpacing
-    ) {
-        Random random = new Random(tick * 31L + plantIndex * 17L);
+    static void addPlants(List<PlantAction> plants, Set<String> usedThisTick, Set<String> globalOccupied,
+                          int plantIndex, int count, int tick, int minSpacing) {
+        Random random = new Random(tick * 31L + plantIndex * 17L + 991L);
         int attempts = 0;
-        int maxAttempts = count * 200;
+        int maxAttempts = count * 250;
         while (count > 0 && attempts < maxAttempts) {
             attempts++;
             int row = random.nextInt(N);
             int col = random.nextInt(M);
-            if (plantIndex == OAK_TREE || plantIndex == DWARF_SUNFLOWER) {
+            if (minSpacing > 1) {
                 row = (row / minSpacing) * minSpacing + random.nextInt(minSpacing);
                 col = (col / minSpacing) * minSpacing + random.nextInt(minSpacing);
-                row = Math.min(row, N - 1);
-                col = Math.min(col, M - 1);
+                row = Math.min(Math.max(row, 0), N - 1);
+                col = Math.min(Math.max(col, 0), M - 1);
             }
             String position = row + "," + col;
-            if (!usedThisTick.contains(position) && !globalOccupied.contains(position)) {
-                boolean tooClose = false;
-                if (minSpacing > 1) {
-                    for (int dr = -minSpacing + 1; dr < minSpacing && !tooClose; dr++) {
-                        for (int dc = -minSpacing + 1; dc < minSpacing && !tooClose; dc++) {
-                            if (dr == 0 && dc == 0) continue;
-                            int nr = row + dr;
-                            int nc = col + dc;
-                            if (nr >= 0 && nr < N && nc >= 0 && nc < M) {
-                                String neighbor = nr + "," + nc;
-                                if (globalOccupied.contains(neighbor) || usedThisTick.contains(neighbor)) {
-                                    tooClose = true;
-                                }
+            if (usedThisTick.contains(position) || globalOccupied.contains(position)) {
+                continue;
+            }
+            boolean tooClose = false;
+            if (minSpacing > 1) {
+                for (int dr = -minSpacing + 1; dr < minSpacing && !tooClose; dr++) {
+                    for (int dc = -minSpacing + 1; dc < minSpacing && !tooClose; dc++) {
+                        if (dr == 0 && dc == 0) continue;
+                        int nr = row + dr;
+                        int nc = col + dc;
+                        if (nr >= 0 && nr < N && nc >= 0 && nc < M) {
+                            String neighbor = nr + "," + nc;
+                            if (globalOccupied.contains(neighbor) || usedThisTick.contains(neighbor)) {
+                                tooClose = true;
                             }
                         }
                     }
                 }
-                if (!tooClose) {
-                    usedThisTick.add(position);
-                    plants.add(new PlantAction(plantIndex, row, col));
-                    count--;
-                }
+            }
+            if (!tooClose) {
+                usedThisTick.add(position);
+                plants.add(new PlantAction(plantIndex, row, col));
+                count--;
             }
         }
     }

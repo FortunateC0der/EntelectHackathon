@@ -3,8 +3,12 @@ package level3;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
+
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     static final int N = 150;
     static final int M = 150;
@@ -39,11 +43,11 @@ public class Main {
 
         int total = actions.stream().mapToInt(a -> a.plants.size()).sum();
 
-        System.out.println("Level 3 solution written to level3_solution.json");
-        System.out.println("Grid: " + N + " x " + M);
-        System.out.println("Ticks: " + T);
-        System.out.println("Total planting actions: " + total);
-        System.out.println("Number of ticks with actions: " + actions.size());
+        LOGGER.info("Level 3 solution written to level3_solution.json");
+        LOGGER.info("Grid: " + N + " x " + M);
+        LOGGER.info("Ticks: " + T);
+        LOGGER.info("Total planting actions: " + total);
+        LOGGER.info("Number of ticks with actions: " + actions.size());
     }
 
     static List<TickAction> generateLevel3Strategy() {
@@ -126,12 +130,10 @@ public class Main {
             int tick,
             boolean isWinter
     ) {
-        if (isWinter) {
-            if (plantIndex == ROSE_BUSH ||
-                plantIndex == ORANGE_BLOSSOM ||
-                plantIndex == LAVENDER) {
-                return;
-            }
+        if (isWinter && (plantIndex == ROSE_BUSH
+                || plantIndex == ORANGE_BLOSSOM
+                || plantIndex == LAVENDER)) {
+            return;
         }
 
         Random rnd = new Random(tick * 37L + plantIndex * 17L + 12345L);
@@ -243,7 +245,7 @@ public class Main {
             w.write("  ]\n}\n");
 
         } catch (IOException e) {
-            System.err.println("Failed to write file: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Failed to write file", e);
         }
     }
 }
